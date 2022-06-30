@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(ConflictException.class)
   public ResponseEntity<ExceptionResponse> resourceAlreadyExists(ConflictException conflictException) {
-    ExceptionResponse response=new ExceptionResponse();
+    ExceptionResponse response = new ExceptionResponse();
     response.setError(HttpStatus.CONFLICT.getReasonPhrase());
     response.setStatus(HttpStatus.CONFLICT.value());
     response.setMessage(conflictException.getMessage());
@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(UnAuthorizedException.class)
   public ResponseEntity<ExceptionResponse> unauthorizedException(UnAuthorizedException unAuthorizedException) {
-    ExceptionResponse response=new ExceptionResponse();
+    ExceptionResponse response = new ExceptionResponse();
     response.setError(HttpStatus.UNAUTHORIZED.getReasonPhrase());
     response.setStatus(HttpStatus.UNAUTHORIZED.value());
     response.setMessage(unAuthorizedException.getMessage());
@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(BadRequestException.class)
   public ResponseEntity<ExceptionResponse> badRequestException(BadRequestException badRequestException) {
-    ExceptionResponse response=new ExceptionResponse();
+    ExceptionResponse response = new ExceptionResponse();
     response.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
     response.setStatus(HttpStatus.BAD_REQUEST.value());
     response.setMessage(badRequestException.getMessage());
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(ForbiddenException.class)
   public ResponseEntity<ExceptionResponse> forbiddenException(ForbiddenException forbiddenException) {
-    ExceptionResponse response=new ExceptionResponse();
+    ExceptionResponse response = new ExceptionResponse();
     response.setError(HttpStatus.FORBIDDEN.getReasonPhrase());
     response.setStatus(HttpStatus.FORBIDDEN.value());
     response.setMessage(forbiddenException.getMessage());
@@ -67,7 +67,7 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ExceptionResponse> genericException(Exception exception) {
-    ExceptionResponse response=new ExceptionResponse();
+    ExceptionResponse response = new ExceptionResponse();
     response.setError(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
     response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
     response.setMessage(exception.getMessage());

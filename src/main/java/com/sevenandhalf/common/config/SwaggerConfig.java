@@ -7,8 +7,12 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+
+
+
 @Configuration
 public class SwaggerConfig {
+
   @Bean
   public Docket api() {
     return new Docket(DocumentationType.SWAGGER_2)
@@ -17,4 +21,5 @@ public class SwaggerConfig {
         .paths(PathSelectors.any())
         .build();
   }
+
 }
