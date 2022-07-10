@@ -1,7 +1,9 @@
 package com.sevenandhalf.domain.service.user;
 
 
+import com.sevenandhalf.common.utils.Utils;
 import com.sevenandhalf.domain.dao.auth.LoginRequestDto;
+import com.sevenandhalf.domain.dao.auth.LoginResponseDto;
 import com.sevenandhalf.domain.dao.auth.SignUpRequestDto;
 import com.sevenandhalf.domain.entity.User;
 import com.sevenandhalf.domain.repository.UserRepository;
@@ -16,6 +18,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServicesImpl implements UserService {
@@ -58,7 +62,7 @@ public class UserServicesImpl implements UserService {
   }
 
   @Override
-  public String signIn(LoginRequestDto loginRequest) throws UnAuthorizedException {
+  public LoginResponseDto signIn(LoginRequestDto loginRequest) throws UnAuthorizedException {
 
     try {
       Authentication authentication = authenticationManager.authenticate(
@@ -71,12 +75,20 @@ public class UserServicesImpl implements UserService {
       SecurityContextHolder.getContext().setAuthentication(authentication);
       UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsernameOrEmail());
 
-      return jwtService.generateToken(userDetails);
-
+      return new LoginResponseDto(
+          jwtService.generateToken(userDetails),
+          jwtService.TOKEN_TYPE,
+          Utils.convertTime(jwtService.TOKEN_EXPIRATION_TIME)
+      );
     }catch (Exception exception) {
       throw new UnAuthorizedException(exception.getMessage());
     }
 
+  }
+
+
+  public List<User> findAll() {
+    return userRepository.findAll();
   }
 
 

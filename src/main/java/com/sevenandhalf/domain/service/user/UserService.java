@@ -1,10 +1,13 @@
 package com.sevenandhalf.domain.service.user;
 
 import com.sevenandhalf.domain.dao.auth.LoginRequestDto;
+import com.sevenandhalf.domain.dao.auth.LoginResponseDto;
 import com.sevenandhalf.domain.dao.auth.SignUpRequestDto;
 import com.sevenandhalf.domain.entity.User;
 import com.sevenandhalf.exception.ConflictException;
 import com.sevenandhalf.exception.UnAuthorizedException;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -12,6 +15,8 @@ public interface UserService {
 
   void registerUser(SignUpRequestDto signUpRequest) throws ConflictException;
 
-  String signIn(LoginRequestDto loginRequest) throws UnAuthorizedException;
+  LoginResponseDto signIn(LoginRequestDto loginRequest) throws UnAuthorizedException;
+
+  List<User> findAll();
 
 }
