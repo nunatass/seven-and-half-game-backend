@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.util.Date;
 import java.util.UUID;
 
 @ApiModel("User")
@@ -21,6 +22,7 @@ public class UserDto {
   private String email;
   private String username;
   private String password;
+  private Date birthday;
   private Wallet wallet;
 
 
@@ -31,6 +33,7 @@ public class UserDto {
     instance.setEmail(user.getEmail());
     instance.setUsername(user.getUsername());
     instance.setPassword(user.getPassword());
+    instance.setBirthday(user.getBirthday());
     instance.setWallet(user.getWallet());
     return instance;
   }

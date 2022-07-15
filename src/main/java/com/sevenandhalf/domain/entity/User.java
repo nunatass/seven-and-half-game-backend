@@ -11,6 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -45,10 +46,17 @@ public class User implements Serializable {
   @Column(name = "password", nullable = false, length = 64)
   private String password;
 
+  @NotNull(message = "Birth date must be provided")
+  @Column(name = "birth_date", nullable = false)
+  private Date birthday;
+
+
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "wallet_id", referencedColumnName = "id")
   @JsonManagedReference
   private Wallet wallet;
+
+
 
 }
 

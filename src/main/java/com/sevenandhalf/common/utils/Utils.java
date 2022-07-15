@@ -2,7 +2,7 @@ package com.sevenandhalf.common.utils;
 
 public class Utils {
 
-  public static String convertTime(long time) {
+  public static String timeConverter(long time) {
     long seconds = time / 1000;
     long minutes = seconds / 60;
     long hours = minutes / 60;
@@ -24,3 +24,4 @@ public class Utils {
     }
   }
 }
+

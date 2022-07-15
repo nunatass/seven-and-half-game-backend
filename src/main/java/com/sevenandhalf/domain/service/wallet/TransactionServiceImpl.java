@@ -98,7 +98,6 @@ public class TransactionServiceImpl implements TransactionService {
     transaction.setWallet(wallet.get());
     transaction.setAmount(amount);
     transaction.setType(type);
-    transaction.setCreatedAt(new Date());
     walletRepository.save(walletToUpdate);
     return transactionRepository.save(transaction);
 

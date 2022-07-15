@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 
 @ApiModel("Transaction Request")
@@ -16,5 +17,6 @@ import java.math.BigDecimal;
 public class TransactionRequestDto {
   private BigDecimal amount;
   private TransactionType type;
+  private Date createdAt = new Date();
 
 }

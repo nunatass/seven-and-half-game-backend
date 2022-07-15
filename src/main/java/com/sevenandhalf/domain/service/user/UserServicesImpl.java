@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +82,7 @@ public class UserServicesImpl implements UserService {
     user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
     user.setFullName(signUpRequest.getFullName());
     user.setUsername(signUpRequest.getUsername());
+    user.setBirthday(signUpRequest.getBirthday());
 
     // create wallet for user
     Wallet wallet = new Wallet();
@@ -110,7 +112,7 @@ public class UserServicesImpl implements UserService {
       return new LoginResponseDto(
           jwtService.generateToken(userDetails),
           jwtService.TOKEN_TYPE,
-          Utils.convertTime(jwtService.TOKEN_EXPIRATION_TIME)
+          Utils.timeConverter(jwtService.TOKEN_EXPIRATION_TIME)
       );
     }catch (Exception exception) {
       throw new UnAuthorizedException(exception.getMessage());

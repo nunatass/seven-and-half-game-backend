@@ -40,7 +40,7 @@ public class Transaction {
 
   @NotNull(message = "Transaction amount must be provided")
   @Column(name = "amount", nullable = false)
-  @Digits(integer = 10, fraction = 5)
+  @Digits(integer = 4, fraction = 3)
   private BigDecimal amount;
 
   @NotNull(message = "Transaction wallet must be provided")
@@ -50,6 +50,7 @@ public class Transaction {
   private Wallet wallet;
 
   @Column
+  @Digits(integer = 4, fraction = 3)
   private BigDecimal balanceAfterTransaction;
 
   @CreatedDate

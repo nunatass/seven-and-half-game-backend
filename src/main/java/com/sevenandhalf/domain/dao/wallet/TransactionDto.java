@@ -17,10 +17,10 @@ import java.util.UUID;
 @NoArgsConstructor
 public class TransactionDto {
   private UUID id;
-  private BigDecimal balanceAfterTransaction;
-  private BigDecimal transactionAmount;
-  private TransactionType type;
   private UUID walletId;
+  private TransactionType type;
+  private BigDecimal transactionAmount;
+  private BigDecimal balanceAfterTransaction;
   private Date createdAt;
 
 
