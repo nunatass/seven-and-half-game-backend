@@ -7,6 +7,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -19,9 +21,11 @@ public class JwtService {
   @Value("${jwt.secret}")
   private String SECRET_KEY ;
 
-  private final String PREFIX = "Bearer ";
+  public final String TOKEN_TYPE = "Bearer";
 
-  private long EXPIRATION_TIME =  3 * 60 * 60 * 1000; // 3 hours
+  private final long ONE_HOUR_IN_MILLIS = 1000 * 60 * 60; // 1 hour in millis
+
+  public long TOKEN_EXPIRATION_TIME = 5 * ONE_HOUR_IN_MILLIS; // 5 hour
 
   public String extractUsername(String token) {
     return extractClaim(token, Claims::getSubject);
@@ -49,9 +53,9 @@ public class JwtService {
   }
 
   private String createToken(Map<String, Object> claims, String subject) {
-    return PREFIX + Jwts.builder().setClaims(claims).setSubject(subject)
+    return Jwts.builder().setClaims(claims).setSubject(subject)
       .setIssuedAt(new Date(System.currentTimeMillis()))
-      .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+      .setExpiration(new Date(System.currentTimeMillis() + TOKEN_EXPIRATION_TIME))
       .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
   }
 
@@ -59,5 +63,7 @@ public class JwtService {
     final String username = extractUsername(token);
     return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
   }
+
+
 }
 

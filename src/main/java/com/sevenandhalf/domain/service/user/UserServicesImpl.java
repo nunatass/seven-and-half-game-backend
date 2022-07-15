@@ -6,9 +6,11 @@ import com.sevenandhalf.domain.dao.auth.LoginRequestDto;
 import com.sevenandhalf.domain.dao.auth.LoginResponseDto;
 import com.sevenandhalf.domain.dao.auth.SignUpRequestDto;
 import com.sevenandhalf.domain.entity.User;
+import com.sevenandhalf.domain.entity.wallet.Wallet;
 import com.sevenandhalf.domain.repository.UserRepository;
 import com.sevenandhalf.exception.ConflictException;
 import com.sevenandhalf.exception.UnAuthorizedException;
+import com.sevenandhalf.exception.User.UserNotFownedException;
 import com.sevenandhalf.security.jwt.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +21,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServicesImpl implements UserService {
@@ -42,13 +48,30 @@ public class UserServicesImpl implements UserService {
 
   @Override
   public User findByEmail(String email) {
-    return null;
+    Optional<User> user =  userRepository.findByEmail(email);
+
+    if(user.isPresent()) {
+      throw new UserNotFownedException("User not found!");
+    }
+
+    return user.get();
   }
 
   @Override
-  public void registerUser(SignUpRequestDto signUpRequest) throws ConflictException {
+  public User findById(UUID id) throws UserNotFownedException {
+    Optional<User> user =  userRepository.findById(id);
 
-   if(userRepository.findByEmail(signUpRequest.getEmail()) != null) {
+    if(user.isEmpty()) {
+      throw new UserNotFownedException("User not found!");
+    }
+
+    return user.get();
+  }
+
+  @Override
+  public User registerUser(SignUpRequestDto signUpRequest) throws ConflictException {
+
+   if(userRepository.findByEmail(signUpRequest.getEmail()).isPresent()) {
       throw new ConflictException("Email Address already in use!");
     }
 
@@ -58,7 +81,16 @@ public class UserServicesImpl implements UserService {
     user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
     user.setFullName(signUpRequest.getFullName());
     user.setUsername(signUpRequest.getUsername());
+
+    // create wallet for user
+    Wallet wallet = new Wallet();
+    wallet.setUser(user);
+    wallet.setBalance(BigDecimal.ZERO);
+    wallet.setTransactions(new ArrayList<>());
+    user.setWallet(wallet);
     userRepository.save(user);
+
+    return user;
   }
 
   @Override
@@ -85,7 +117,6 @@ public class UserServicesImpl implements UserService {
     }
 
   }
-
 
   public List<User> findAll() {
     return userRepository.findAll();

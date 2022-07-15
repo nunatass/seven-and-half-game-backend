@@ -1,6 +1,7 @@
 package com.sevenandhalf.common.config;
 
 
+import com.sevenandhalf.common.Constants.BasePaths;
 import com.sevenandhalf.domain.service.user.CustomUserDetailsService;
 import com.sevenandhalf.security.jwt.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private final String SIGN_UP_URL = Constants.AUTH_BASE_URL + "/signup";
-  private final String LOGIN_URL = Constants.AUTH_BASE_URL + "/signin";
+  private final String SIGN_UP_URL = BasePaths.AUTH_BASE_URL + "/signup";
+  private final String LOGIN_URL = BasePaths.AUTH_BASE_URL + "/signin";
 
   @Autowired
   CustomUserDetailsService customUserDetailsService;
@@ -43,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
         .antMatchers( LOGIN_URL, SIGN_UP_URL).permitAll()
         .anyRequest().authenticated()
+        .and().cors()
         .and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     security.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

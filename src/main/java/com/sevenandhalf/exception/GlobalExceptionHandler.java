@@ -65,7 +65,7 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
   }
 
-  @ExceptionHandler(Exception.class)
+ @ExceptionHandler(Exception.class)
   public ResponseEntity<ExceptionResponse> genericException(Exception exception) {
     ExceptionResponse response = new ExceptionResponse();
     response.setError(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
