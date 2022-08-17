@@ -23,7 +23,7 @@ public class UserController {
   @Autowired
   UserService userService;
 
-
+  // Retrieve all users
   @GetMapping("")
   public ResponseEntity<List<UserDto>> listAllUsers() {
     List<UserDto> userDtoList =  userService.findAll().stream()
@@ -33,7 +33,7 @@ public class UserController {
     return ResponseEntity.ok(userDtoList);
   }
 
-
+  // Retrieve a user by id
   @GetMapping("/{userId}")
   public ResponseEntity<UserDto> getUser( @PathVariable UUID userId) {
     User user = userService.findById(userId);

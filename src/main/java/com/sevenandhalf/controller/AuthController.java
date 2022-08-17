@@ -25,13 +25,14 @@ public class AuthController {
   @Autowired
   UserService userService;
 
-
+  // Sign up a user
   @PostMapping("/signup")
   public ResponseEntity<UserDto> registerUser(@Valid @RequestBody SignUpRequestDto signUpRequest) throws ConflictException {
     User user = userService.registerUser(signUpRequest);
     return ResponseEntity.status(HttpStatus.CREATED).body(UserDto.fromEntity(user));
   }
 
+  // Login a user
   @CrossOrigin
   @PostMapping("/signin")
   public ResponseEntity<LoginResponseDto> authenticateUser(@Valid @RequestBody LoginRequestDto loginRequest) throws UnAuthorizedException {

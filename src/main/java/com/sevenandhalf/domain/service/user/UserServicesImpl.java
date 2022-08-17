@@ -21,7 +21,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,8 +61,15 @@ public class UserServicesImpl implements UserService {
   public User findById(UUID id) throws UserNotFownedException {
     Optional<User> user =  userRepository.findById(id);
 
+    String userEmail = userDetailsService.getAuthenticatedUser().getUsername();
+
+
     if(user.isEmpty()) {
       throw new UserNotFownedException("User not found!");
+    }
+
+    if(!existsByIdAndEmail(id, userEmail)) {
+      throw new UnAuthorizedException("User not authorized to access this resource!");
     }
 
     return user.get();
@@ -122,6 +128,11 @@ public class UserServicesImpl implements UserService {
 
   public List<User> findAll() {
     return userRepository.findAll();
+  }
+
+  @Override
+  public boolean existsByIdAndEmail(UUID id, String email) {
+    return userRepository.existsByIdAndEmail(id, email);
   }
 
 

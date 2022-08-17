@@ -4,6 +4,8 @@ package com.sevenandhalf.domain.service.user;
 import com.sevenandhalf.domain.entity.User;
 import com.sevenandhalf.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,5 +30,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     return new org.springframework.security.core.userdetails.User(
         user.get().getEmail(), user.get().getPassword(), new ArrayList<>());
+  }
+
+  public UserDetails getAuthenticatedUser() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    return loadUserByUsername(authentication.getName());
   }
 }
